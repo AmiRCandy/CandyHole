@@ -171,4 +171,8 @@ After setup, you can edit the YAML configuration files to:
 
 ---
 
+# Thanks to
+- [**LlamaStudioCommunity**](https://t.me/LlamaStudioCommunity)
+
 **Happy tunneling! 🌐**
+
