@@ -46,9 +46,7 @@ sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/
 
 ## Usage
 
-### Server Setup (Foreign Server)
-
-First, download and run the script on your server outside Iran:
+Download and run the script:
 
 ```bash
 wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh
@@ -60,6 +58,8 @@ Or run directly:
 ```bash
 sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh | sudo bash
 ```
+
+### Server Setup (Foreign Server)
 
 1. Choose option "1) Server (Foreign server outside Iran)"
 2. Enter your desired port (default: 8080)
@@ -78,24 +78,23 @@ sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/
 
 ### Client Setup (Iran Server)
 
-Download and run the script on your server inside Iran:
-
-```bash
-wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh
-chmod +x CandyHole.sh
-sudo ./CandyHole.sh
-```
-
-Or run directly:
-```bash
-sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh | sudo bash
-```
-
 1. Choose option "2) Client (Iran server)"
 2. Enter the foreign server IP address
 3. Enter the server port
 4. Enter the secret key from server setup
 5. The script will automatically configure everything
+
+### Uninstall
+
+To completely remove Paqet and all its components:
+
+1. Choose option "3) Uninstall Paqet"
+2. The script will automatically:
+   - Stop and remove the Paqet service
+   - Remove configuration files
+   - Remove Paqet binary
+   - Clean up firewall rules
+   - Optionally remove installed system packages
 
 ## What It Does
 
