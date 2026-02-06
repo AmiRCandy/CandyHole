@@ -169,10 +169,9 @@ After setup, you can edit the YAML configuration files to:
 - **CandyHole Issues**: Create an issue in the [CandyHole repository](https://github.com/AmiRCandy/CandyHole)
 - **Paqet Issues**: Check the [official Paqet repository](https://github.com/hanselime/paqet)
 
----
-
 # Thanks to
 - [**LlamaStudioCommunity**](https://t.me/LlamaStudioCommunity)
 
-**Happy tunneling! 🌐**
+---
 
+**Happy tunneling! 🌐**
