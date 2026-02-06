@@ -69,6 +69,97 @@ show_progress() {
     echo -e "${BLUE}[PROGRESS]${NC} $1..."
 }
 
+# Function to uninstall Paqet
+uninstall_paqet() {
+    echo ""
+    print_header "Uninstalling Paqet"
+
+    # Stop and disable service
+    show_progress "Stopping Paqet service"
+    systemctl stop paqet 2>/dev/null
+    systemctl disable paqet 2>/dev/null
+
+    # Remove systemd service file
+    if [ -f "/etc/systemd/system/paqet.service" ]; then
+        show_progress "Removing systemd service"
+        rm -f /etc/systemd/system/paqet.service
+        systemctl daemon-reload
+        print_success "Systemd service removed"
+    fi
+
+    # Remove configuration files
+    if [ -d "/etc/paqet" ]; then
+        show_progress "Removing configuration files"
+        rm -rf /etc/paqet
+        print_success "Configuration files removed"
+    fi
+
+    # Remove Paqet binary
+    if [ -f "/usr/local/bin/paqet" ]; then
+        show_progress "Removing Paqet binary"
+        rm -f /usr/local/bin/paqet
+        print_success "Paqet binary removed"
+    fi
+
+    # Remove iptables rules (if netfilter-persistent is available)
+    show_progress "Removing firewall rules"
+    # Try to remove the rules we added
+    iptables -t raw -D PREROUTING -p tcp --dport 8080 -j NOTRACK 2>/dev/null || true
+    iptables -t raw -D OUTPUT -p tcp --sport 8080 -j NOTRACK 2>/dev/null || true
+    iptables -t mangle -D OUTPUT -p tcp --sport 8080 --tcp-flags RST RST -j DROP 2>/dev/null || true
+
+    # Save iptables rules if netfilter-persistent is available
+    if command -v netfilter-persistent >/dev/null 2>&1; then
+        netfilter-persistent save 2>/dev/null || true
+    fi
+
+    # Remove UFW rules
+    if command -v ufw >/dev/null 2>&1; then
+        ufw delete allow 8080 2>/dev/null || true
+    fi
+
+    print_success "Firewall rules cleaned up"
+
+    # Remove libpcap symlink if it exists
+    if [ -L "/usr/lib/x86_64-linux-gnu/libpcap.so.0.8" ]; then
+        show_progress "Removing libpcap symlink"
+        rm -f /usr/lib/x86_64-linux-gnu/libpcap.so.0.8
+        ldconfig
+        print_success "Libpcap symlink removed"
+    fi
+
+    # Ask about removing packages
+    echo ""
+    echo -e "${YELLOW}Note: The following packages were installed by this script:${NC}"
+    echo "  - curl, wget, git, nano, vim, htop, net-tools, unzip, zip"
+    echo "  - software-properties-common, libpcap-dev, iptables-persistent"
+    echo ""
+    read -p "Do you want to remove these packages as well? (y/n): " remove_packages
+
+    if [[ $remove_packages =~ ^[Yy]$ ]]; then
+        show_progress "Removing installed packages"
+        apt remove -y curl wget git nano vim htop net-tools unzip zip software-properties-common libpcap-dev iptables-persistent 2>/dev/null || true
+        apt autoremove -y 2>/dev/null || true
+        print_success "Packages removed"
+    else
+        print_info "Keeping packages installed"
+    fi
+
+    echo ""
+    print_header "Uninstallation Complete!"
+    print_success "Paqet has been completely removed from your system"
+    echo ""
+    echo -e "${BLUE}What was removed:${NC}"
+    echo -e "  ✅ Paqet binary (/usr/local/bin/paqet)"
+    echo -e "  ✅ Configuration files (/etc/paqet/)"
+    echo -e "  ✅ Systemd service (paqet.service)"
+    echo -e "  ✅ Firewall rules"
+    echo -e "  ✅ Libpcap symlink"
+    if [[ $remove_packages =~ ^[Yy]$ ]]; then
+        echo -e "  ✅ System packages"
+    fi
+}
+
 # Main script header
 clear
 print_header "🍬 CandyHole - Paqet Tunnel Setup 🍬"
@@ -94,10 +185,11 @@ print_success "System updated successfully"
 echo ""
 print_header "Configuration Setup"
 while true; do
-    echo -e "${WHITE}What would you like to setup?${NC}"
+    echo -e "${WHITE}What would you like to do?${NC}"
     echo "1) Server (Foreign server outside Iran)"
     echo "2) Client (Iran server)"
-    read -p "Enter your choice (1 or 2): " setup_choice
+    echo "3) Uninstall Paqet"
+    read -p "Enter your choice (1-3): " setup_choice
 
     case $setup_choice in
         1)
@@ -110,11 +202,16 @@ while true; do
             print_success "Setting up as Client"
             break
             ;;
+        3)
+            print_success "Uninstalling Paqet"
+            uninstall_paqet
+            exit 0
+            ;;
         "")
-            print_error "Choice cannot be empty. Please enter 1 or 2."
+            print_error "Choice cannot be empty. Please enter 1, 2, or 3."
             ;;
         *)
-            print_error "Invalid choice '$setup_choice'. Please enter 1 or 2."
+            print_error "Invalid choice '$setup_choice'. Please enter 1, 2, or 3."
             ;;
     esac
 done
