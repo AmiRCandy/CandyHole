@@ -40,6 +40,8 @@ print_header() {
 # Function to validate IP address
 validate_ip() {
     local ip=$1
+    # Trim whitespace
+    ip=$(echo "$ip" | xargs)
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         IFS='.' read -r -a octets <<< "$ip"
         for octet in "${octets[@]}"; do
@@ -55,6 +57,8 @@ validate_ip() {
 # Function to validate port
 validate_port() {
     local port=$1
+    # Trim whitespace
+    port=$(echo "$port" | xargs)
     if [[ $port =~ ^[0-9]+$ ]] && [ $port -ge 1 ] && [ $port -le 65535 ]; then
         return 0
     fi
@@ -107,8 +111,11 @@ while true; do
             print_success "Setting up as Client"
             break
             ;;
+        "")
+            print_error "Choice cannot be empty. Please enter 1 or 2."
+            ;;
         *)
-            print_error "Invalid choice. Please enter 1 or 2."
+            print_error "Invalid choice '$setup_choice'. Please enter 1 or 2."
             ;;
     esac
 done
@@ -123,24 +130,27 @@ if [ "$client_or_server" == "c" ]; then
         if validate_ip "$server_ip"; then
             break
         else
-            print_error "Invalid IP address format. Please try again."
+            print_error "Invalid IP address format '$server_ip'. Please enter a valid IP address (e.g., 192.168.1.1)."
         fi
     done
 
     while true; do
-        read -p "Enter the server port (default: 8080): " server_port
-        server_port=${server_port:-8080}
+        read -p "Enter the server port (default: 8080): " server_port_input
+        server_port=${server_port_input:-8080}
         if validate_port "$server_port"; then
             break
         else
-            print_error "Invalid port number. Please enter a number between 1-65535."
+            print_error "Invalid port number '$server_port'. Please enter a number between 1-65535."
         fi
     done
 
-    read -p "Enter the server secret key: " server_secret_key
-    while [ -z "$server_secret_key" ]; do
-        print_error "Secret key cannot be empty."
+    while true; do
         read -p "Enter the server secret key: " server_secret_key
+        if [ -n "$server_secret_key" ]; then
+            break
+        else
+            print_error "Secret key cannot be empty."
+        fi
     done
 
 elif [ "$client_or_server" == "s" ]; then
@@ -148,12 +158,12 @@ elif [ "$client_or_server" == "s" ]; then
     echo ""
     print_header "Server Configuration"
     while true; do
-        read -p "Enter your server port (default: 8080): " server_port
-        server_port=${server_port:-8080}
+        read -p "Enter your server port (default: 8080): " server_port_input
+        server_port=${server_port_input:-8080}
         if validate_port "$server_port"; then
             break
         else
-            print_error "Invalid port number. Please enter a number between 1-65535."
+            print_error "Invalid port number '$server_port'. Please enter a number between 1-65535."
         fi
     done
 fi
