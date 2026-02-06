@@ -1,0 +1,23 @@
+role: "client"
+log:
+  level: "info"
+socks5:
+  - listen: "127.0.0.1:1404"
+    username: "candyhole"                # Optional SOCKS5 authentication
+    password: "candyhole"                # Optional SOCKS5 authentication
+network:
+  interface: "iface_name"
+  ipv4:
+    addr: "local_ip:0"
+    router_mac: "router_mac"
+  tcp:
+    local_flag: ["PA"]  
+    remote_flag: ["PA"] 
+server:
+  addr: "server_ip:server_port"
+transport:
+  protocol: "kcp"
+  conn: 1       
+  kcp:
+    mode: "fast" 
+    key: "secret_key"
