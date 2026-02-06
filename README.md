@@ -2,6 +2,32 @@
 
 A user-friendly script to set up Paqet tunnels between Iran and foreign servers, helping bypass internet censorship.
 
+## Quick Start
+
+### Option 1: Direct Download and Run
+
+Download and run the script directly from GitHub:
+
+```bash
+# Download the script
+wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh
+
+# Make it executable (Linux/Unix systems)
+chmod +x CandyHole.sh
+
+# Run as root
+sudo ./CandyHole.sh
+```
+
+### Option 2: Run Directly with curl
+
+Or run directly without downloading:
+
+```bash
+sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh | sudo bash
+```
+
+
 ## Features
 
 - 🎨 **Colored Interface**: Beautiful, easy-to-read colored output
@@ -22,10 +48,17 @@ A user-friendly script to set up Paqet tunnels between Iran and foreign servers,
 
 ### Server Setup (Foreign Server)
 
-Run this on your server outside Iran:
+First, download and run the script on your server outside Iran:
 
 ```bash
+wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh
+chmod +x CandyHole.sh
 sudo ./CandyHole.sh
+```
+
+Or run directly:
+```bash
+sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh | sudo bash
 ```
 
 1. Choose option "1) Server (Foreign server outside Iran)"
@@ -45,10 +78,17 @@ sudo ./CandyHole.sh
 
 ### Client Setup (Iran Server)
 
-Run this on your server inside Iran:
+Download and run the script on your server inside Iran:
 
 ```bash
+wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh
+chmod +x CandyHole.sh
 sudo ./CandyHole.sh
+```
+
+Or run directly:
+```bash
+sudo curl -sSL https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh | sudo bash
 ```
 
 1. Choose option "2) Client (Iran server)"
@@ -120,9 +160,15 @@ After setup, you can edit the YAML configuration files to:
 - Adjust network interface settings
 - Configure additional SOCKS5 users
 
+## Repository
+
+- **CandyHole Repository**: [https://github.com/AmiRCandy/CandyHole](https://github.com/AmiRCandy/CandyHole)
+- **Direct Script URL**: [https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh](https://raw.githubusercontent.com/AmiRCandy/CandyHole/refs/heads/main/CandyHole.sh)
+
 ## Support
 
-For issues with Paqet itself, check the [official repository](https://github.com/hanselime/paqet).
+- **CandyHole Issues**: Create an issue in the [CandyHole repository](https://github.com/AmiRCandy/CandyHole)
+- **Paqet Issues**: Check the [official Paqet repository](https://github.com/hanselime/paqet)
 
 ---
 
