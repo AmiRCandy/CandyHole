@@ -13,7 +13,7 @@ Download and run the script directly from GitHub:
 
 ```bash
 # Download the script
-wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/master/CandyHole.sh
+wget https://raw.githubusercontent.com/AmiRCandy/CandyHole/main/CandyHole.sh
 
 
 # Make it executable (Linux/Unix systems)
@@ -28,7 +28,7 @@ sudo ./CandyHole.sh
 Or run directly without downloading:
 
 ```bash
-sudo bash <(curl -Ls https://raw.githubusercontent.com/AmiRCandy/CandyHole/msater/CandyHole.sh)
+sudo bash <(curl -Ls https://raw.githubusercontent.com/AmiRCandy/CandyHole/main/CandyHole.sh)
 ```
 
 ## Screenshot
@@ -182,6 +182,7 @@ After setup, you can edit the YAML configuration files to:
 ---
 
 **Happy tunneling! 🌐**
+
 
 
 
