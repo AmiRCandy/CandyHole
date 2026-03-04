@@ -274,20 +274,37 @@ print_success "System packages installed successfully"
 
 # Install Paqet
 echo ""
-show_progress "Downloading and installing Paqet"
-wget -q https://github.com/hanselime/paqet/releases/download/v1.0.0-alpha.13/paqet-linux-amd64-v1.0.0-alpha.13.tar.gz
-if [ $? -ne 0 ]; then
-    print_error "Failed to download Paqet"
-    exit 1
+show_progress "Preparing Paqet installation"
+
+PAQET_VERSION="v1.0.0-alpha.13"
+PAQET_FILE="paqet-linux-amd64-${PAQET_VERSION}.tar.gz"
+PAQET_BINARY="paqet_linux_amd64"
+LOCAL_PATH="/root/${PAQET_FILE}"
+DOWNLOAD_URL="https://github.com/hanselime/paqet/releases/download/${PAQET_VERSION}/${PAQET_FILE}"
+
+# Check if file exists in /root
+if [ -f "$LOCAL_PATH" ]; then
+    print_info "Found Paqet archive in /root. Using local file."
+    cp "$LOCAL_PATH" .
+else
+    show_progress "Downloading Paqet"
+    wget "$DOWNLOAD_URL"
+    if [ $? -ne 0 ]; then
+        print_error "Failed to download Paqet"
+        exit 1
+    fi
 fi
 
-tar -xzf paqet-linux-amd64-v1.0.0-alpha.13.tar.gz
+# Extract archive
+show_progress "Extracting Paqet archive"
+tar -xzf "$PAQET_FILE"
 if [ $? -ne 0 ]; then
     print_error "Failed to extract Paqet archive"
     exit 1
 fi
 
-mv paqet_linux_amd64 /usr/local/bin/paqet
+# Move binary
+mv "$PAQET_BINARY" /usr/local/bin/paqet
 chmod +x /usr/local/bin/paqet
 
 # Fix libpcap library link
